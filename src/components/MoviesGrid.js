@@ -12,10 +12,12 @@ export default function MoviesGrid() {
     return movie.title.toLowerCase().includes(searchTerm.toLowerCase());
   }).filter(movie => {
     if (genreFilter === 'All Genres') return true;
-    return movie.genre === genreFilter;
+    return movie.genre === genreFilter.toLowerCase();
   }).filter(movie => {
     if (ratingFilter === 'All') return true;
-    return movie.rating === ratingFilter;
+    if (ratingFilter === 'Good') return movie.rating >= 8;
+    if (ratingFilter === 'Ok') return movie.rating >= 5 && movie.rating < 8;
+    if (ratingFilter === 'Bad') return movie.rating < 5;
   });
 
 
@@ -37,7 +39,7 @@ export default function MoviesGrid() {
       <div className="filter-bar">
         <div className="filter-slot">
           <label htmlFor="genre">Genre:</label>
-          <select className="filter-dropdown" value={genreFilter} onChange={(e) => setGenreFilter(e.target.value.toLowerCase())}>
+          <select className="filter-dropdown" value={genreFilter} onChange={(e) => setGenreFilter(e.target.value)}>
             <option>All Genres</option>
             <option>Action</option>
             <option>Fantasy</option>
@@ -47,7 +49,7 @@ export default function MoviesGrid() {
         </div>
         <div className="filter-slot">
           <label htmlFor="rating">Rating:</label>
-          <select className="filter-dropdown" value={ratingFilter} onChange={(e) => setRatingFilter(e.target.value.toLowerCase())}>
+          <select className="filter-dropdown" value={ratingFilter} onChange={(e) => setRatingFilter(e.target.value)}>
             <option>All Ratings</option>
             <option>Good</option>
             <option>Ok</option>
