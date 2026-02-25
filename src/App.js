@@ -9,12 +9,21 @@ import { useState, useEffect } from 'react';
 
 function App() {
   const [movies, setMovies] = useState([]);
+  const [watchlist, setWatchlist] = useState([]);
 
   useEffect(() => {
     fetch(`${process.env.PUBLIC_URL}/movies.json`)
-      .then(response => response.json())
-      .then(data => setMovies(data));
-  }, [])
+      .then((response) => response.json())
+      .then((data) => setMovies(data));
+  }, []);
+
+  const toggleWatchlist = (movieId) => {
+    setWatchlist((prevWatchlist) =>
+      prevWatchlist.includes(movieId)
+        ? prevWatchlist.filter((id) => id !== movieId)
+        : [...prevWatchlist, movieId],
+    );
+  };
 
   return (
     <div className="App">
@@ -32,8 +41,26 @@ function App() {
             </ul>
           </nav>
           <Routes>
-            <Route path="/" element={<MoviesGrid movies={movies} />} />
-            <Route path="/watchlist" element={<Watchlist />} />
+            <Route
+              path="/"
+              element={
+                <MoviesGrid
+                  movies={movies}
+                  watchlist={watchlist}
+                  toggleWatchlist={toggleWatchlist}
+                />
+              }
+            />
+            <Route
+              path="/watchlist"
+              element={
+                <Watchlist
+                  movies={movies}
+                  watchlist={watchlist}
+                  toggleWatchlist={toggleWatchlist}
+                />
+              }
+            />
           </Routes>
         </Router>
       </div>

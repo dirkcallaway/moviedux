@@ -2,14 +2,16 @@ import React, { useState } from 'react';
 import MovieCard from './MovieCard';
 import '../styles.css';
 
-export default function MoviesGrid({ movies }) {
-
+export default function MoviesGrid({ movies, watchlist, toggleWatchlist }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [genreFilter, setGenreFilter] = useState('All Genres');
   const [ratingFilter, setRatingFilter] = useState('All Ratings');
-  const filteredMovies = movies.filter(movie => {
-    const matchesSearch = movie.title.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesGenre = genreFilter === 'All Genres' || movie.genre === genreFilter.toLowerCase();
+  const filteredMovies = movies.filter((movie) => {
+    const matchesSearch = movie.title
+      .toLowerCase()
+      .includes(searchTerm.toLowerCase());
+    const matchesGenre =
+      genreFilter === 'All Genres' || movie.genre === genreFilter.toLowerCase();
     const matchesRating =
       ratingFilter === 'All Ratings' ||
       (ratingFilter === 'Good' && movie.rating >= 8) ||
@@ -26,11 +28,16 @@ export default function MoviesGrid({ movies }) {
         className="search-input"
         value={searchTerm}
         onChange={(e) => setSearchTerm(e.target.value)}
-        placeholder="Search movies..." />
+        placeholder="Search movies..."
+      />
       <div className="filter-bar">
         <div className="filter-slot">
           <label htmlFor="genre">Genre:</label>
-          <select className="filter-dropdown" value={genreFilter} onChange={(e) => setGenreFilter(e.target.value)}>
+          <select
+            className="filter-dropdown"
+            value={genreFilter}
+            onChange={(e) => setGenreFilter(e.target.value)}
+          >
             <option>All Genres</option>
             <option>Action</option>
             <option>Fantasy</option>
@@ -40,7 +47,11 @@ export default function MoviesGrid({ movies }) {
         </div>
         <div className="filter-slot">
           <label htmlFor="rating">Rating:</label>
-          <select className="filter-dropdown" value={ratingFilter} onChange={(e) => setRatingFilter(e.target.value)}>
+          <select
+            className="filter-dropdown"
+            value={ratingFilter}
+            onChange={(e) => setRatingFilter(e.target.value)}
+          >
             <option>All Ratings</option>
             <option>Good</option>
             <option>Ok</option>
@@ -48,13 +59,16 @@ export default function MoviesGrid({ movies }) {
           </select>
         </div>
       </div>
-      <div className='movies-grid'>
-        {
-          filteredMovies.map(movie => (
-            <MovieCard key={movie.id} movie={movie} />
-          ))
-        }
+      <div className="movies-grid">
+        {filteredMovies.map((movie) => (
+          <MovieCard
+            key={movie.id}
+            movie={movie}
+            isWatchlisted={watchlist.includes(movie.id)}
+            toggleWatchlist={toggleWatchlist}
+          />
+        ))}
       </div>
     </div>
-  )
+  );
 }
