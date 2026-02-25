@@ -7,17 +7,17 @@ export default function MoviesGrid() {
   const [movies, setMovies] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [genreFilter, setGenreFilter] = useState('All Genres');
-  const [ratingFilter, setRatingFilter] = useState('All');
+  const [ratingFilter, setRatingFilter] = useState('All Ratings');
   const filteredMovies = movies.filter(movie => {
-    return movie.title.toLowerCase().includes(searchTerm.toLowerCase());
-  }).filter(movie => {
-    if (genreFilter === 'All Genres') return true;
-    return movie.genre === genreFilter.toLowerCase();
-  }).filter(movie => {
-    if (ratingFilter === 'All') return true;
-    if (ratingFilter === 'Good') return movie.rating >= 8;
-    if (ratingFilter === 'Ok') return movie.rating >= 5 && movie.rating < 8;
-    if (ratingFilter === 'Bad') return movie.rating < 5;
+    const matchesSearch = movie.title.toLowerCase().includes(searchTerm.toLowerCase());
+    const matchesGenre = genreFilter === 'All Genres' || movie.genre === genreFilter.toLowerCase();
+    const matchesRating =
+      ratingFilter === 'All Ratings' ||
+      (ratingFilter === 'Good' && movie.rating >= 8) ||
+      (ratingFilter === 'Ok' && movie.rating >= 5 && movie.rating < 8) ||
+      (ratingFilter === 'Bad' && movie.rating < 5);
+
+    return matchesSearch && matchesGenre && matchesRating;
   });
 
 
