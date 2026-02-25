@@ -1,10 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import MovieCard from './MovieCard';
 import '../styles.css';
 
-export default function MoviesGrid() {
+export default function MoviesGrid({ movies }) {
 
-  const [movies, setMovies] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [genreFilter, setGenreFilter] = useState('All Genres');
   const [ratingFilter, setRatingFilter] = useState('All Ratings');
@@ -19,14 +18,6 @@ export default function MoviesGrid() {
 
     return matchesSearch && matchesGenre && matchesRating;
   });
-
-
-
-  useEffect(() => {
-    fetch(`${process.env.PUBLIC_URL}/movies.json`)
-      .then(response => response.json())
-      .then(data => setMovies(data));
-  }, [])
 
   return (
     <div>
